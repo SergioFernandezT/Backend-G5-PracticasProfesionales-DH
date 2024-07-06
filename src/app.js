@@ -24,15 +24,16 @@ app.use(express.urlencoded({ extended: false }))
 
 // ************ Rutas  ************
 // app.use('/', rutasMain)
-// app.use('/api/aspirantes', rutasAspirantes)
+app.use('/api/aspirantes', rutasAspirantes)
 // app.use('/api/profesiones', rutasProfesiones)
 
-// Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
+// PREVIAMENTE CORRER -->    npx sequelize-cli db:create
+// Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1 * { comentar nuevamente luego del 1er run}
 // let SEQ = require('./database/models')
 
 const port = process.env.PORT || 3737;
 app.listen(port, () => {
-	// Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 2
+	// Entrada PARA FORZAR LA CREACION DE LA ESTRUCTURA DE LA BASE DE DATOS 2 * { comentar nuevamente luego del 1er run}
 	// SEQ.sequelize.sync({force: true })    
 	console.log(`El servidor esta corriendo en http://localhost:${port} 🚀🚀🚀`);
 });
