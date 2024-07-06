@@ -16,14 +16,10 @@ const controller = {
     },
     updateAspirante: async (req, res) => {
         const { id } = req.params;
-        const aspirante = await Aspirante.update(req.body, {
-            where: {
-                id
-            }
-        });
+        const aspirante = await Aspirante.update(req.body, { where: { id } });
         res.json(aspirante);
     },
-    
+
 }
 
 module.exports = controller;
