@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const methodOverride = require('method-override');
+const cors = require('cors');
 
 // Requiriendo  archivos de rutas
 // const rutasMain = require('./api/routes/mainRoutes.routes.js')
@@ -25,7 +26,7 @@ app.use(express.urlencoded({ extended: false }))
 // ************ Rutas  ************
 // app.use('/', rutasMain)
 // app.use('/api/aspirantes', rutasAspirantes)
-// app.use('/api/profesiones', rutasProfesiones)
+ app.use('/api/profesiones', rutasProfesiones)
 
 // Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
 // let SEQ = require('./database/models')
