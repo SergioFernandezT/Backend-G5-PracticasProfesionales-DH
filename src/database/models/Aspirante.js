@@ -43,12 +43,15 @@ module.exports = (sequelize, dataTypes) => {
         tableName: 'Aspirante',
         deletedAt: false
     }
+    
     const Aspirante = sequelize.define(alias, cols, config);  
+
     Aspirante.associate = function(models){
         Aspirante.belongsTo(models.Profesiones, {
             as: "Profesiones",
             foreignKey: "Profesion"
         });
     }
+
     return Aspirante;
 };
