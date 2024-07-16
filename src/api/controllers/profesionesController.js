@@ -1,65 +1,66 @@
-const db = require('../../database/models');
+const { Profesion } = require('../../database/models');
 
 const profesionesController = {
     // Listar todas las profesiones
-    getAll: (req, res) => {
-        db.query('SELECT * FROM profesiones', (err, results) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.json(results);
-            }
-        });
+    getAll: async (req, res) => {
+        try {
+            const profesiones = await Profesion.findAll();
+            res.json(profesiones);
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
     // Crear una nueva profesión
-    create: (req, res) => {
+    create: async (req, res) => {
         const { profesion } = req.body;
-        db.query('INSERT INTO profesiones (profesion) VALUES (?)', [profesion], (err, results) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.status(201).send('Profesión creada');
-            }
-        });
+        try {
+            await Profesion.create({ profesion });
+            res.status(201).send('Profesión creada');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
     // Eliminar una profesión por ID
-    delete: (req, res) => {
+    delete: async (req, res) => {
         const { id } = req.params;
-        db.query('DELETE FROM profesiones WHERE id = ?', [id], (err, results) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.send('Profesión eliminada');
-            }
-        });
+        try {
+            await Profesion.destroy({ where: { id } });
+            res.send('Profesión eliminada');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
     // Modificar una profesión por ID
-    update: (req, res) => {
+    update: async (req, res) => {
         const { id } = req.params;
         const { profesion } = req.body;
-        db.query('UPDATE profesiones SET profesion = ? WHERE id = ?', [profesion, id], (err, results) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.send('Profesión modificada');
-            }
-        });
+        try {
+            await Profesion.update({ profesion }, { where: { id } });
+            res.send('Profesión modificada');
+        } catch (err) {
+            res.status(500).send(err);
+        }
     },
 
     // Buscar una profesión por ID
-    getById: (req, res) => {
+    getById: async (req, res) => {
         const { id } = req.params;
-        db.query('SELECT * FROM profesiones WHERE id = ?', [id], (err, results) => {
-            if (err) {
-                res.status(500).send(err);
+        try {
+            const profesion = await Profesion.findByPk(id);
+            if (profesion) {
+                res.json(profesion);
             } else {
-                res.json(results[0]);
+                res.status(404).send('Profesión no encontrada');
             }
-        });
+        } catch (err) {
+            res.status(500).send(err);
+        }
     }
 };
 
 module.exports = profesionesController;
+
+
