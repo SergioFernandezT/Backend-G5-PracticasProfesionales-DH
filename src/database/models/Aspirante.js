@@ -14,27 +14,27 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false,
             unique: true
         },
-        Email:{
+        Email: {
             type: dataTypes.STRING(100),
             allowNull: false
         },
-        Telefono:{
+        Telefono: {
             type: dataTypes.INTEGER(15),
             allowNull: false
         },
-        Perfil_linkedin:{
+        Perfil_linkedin: {
             type: dataTypes.STRING(100),
             allowNull: false
         },
-        Fecha_nacimiento:{
+        Fecha_nacimiento: {
             type: dataTypes.DATE,
             allowNull: false
         },
-        Sexo:{
-            type: dataTypes.ENUM('maculino','femenino'),
+        Sexo: {
+            type: dataTypes.ENUM('maculino', 'femenino'),
             allowNull: false
         },
-        Imagen:{
+        Imagen: {
             type: dataTypes.STRING(100),
             allowNull: false
         },
@@ -48,12 +48,12 @@ module.exports = (sequelize, dataTypes) => {
         tableName: 'aspirantes',
         deletedAt: false
     }
-    
-    const Aspirante = sequelize.define(alias, cols, config);  
 
-    Aspirante.associate = (models) =>{
+    const Aspirante = sequelize.define(alias, cols, config);
+
+    Aspirante.associate = models => {
         Aspirante.belongsTo(models.Profesion, {
-            as: "profesiones",
+            as: "profesiones_de_aspirante",
             foreignKey: "profesion_id"
         });
     }
