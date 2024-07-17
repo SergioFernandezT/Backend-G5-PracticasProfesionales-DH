@@ -38,25 +38,25 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(100),
             allowNull: false
         },
-        Profesion:{
-            type: dataTypes.STRING(200),
-            allowNull: false
-        }
+        // profesion_id:{
+        //     type: dataTypes.STRING(200),
+        //     allowNull: false
+        // }
     };
     let config = {
         timestamps: false,
-        tableName: 'Aspirantes',
+        tableName: 'aspirantes',
         deletedAt: false
     }
     
     const Aspirante = sequelize.define(alias, cols, config);  
 
-    // Aspirante.associate = function(models){
-    //     Aspirante.belongsTo(models.Profesiones, {
-    //         as: "Profesiones",
-    //         foreignKey: "Profesion"
-    //     });
-    // }
+    Aspirante.associate = (models) =>{
+        Aspirante.belongsTo(models.Profesion, {
+            as: "profesiones",
+            foreignKey: "profesion_id"
+        });
+    }
 
     return Aspirante;
 };
