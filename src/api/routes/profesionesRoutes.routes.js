@@ -1,21 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const profesionesController = require('../controllers/profesionesController.js');
 
-// Listar todas las profesiones
-router.get('/', profesionesController.getAll);
+const profesionController = require('../controllers/profesionesController');
 
-// Crear una nueva profesión
-router.post('/', profesionesController.create);
+// Rutas para las profesiones
 
-// Eliminar una profesión por ID
-router.delete('/:id', profesionesController.delete);
+// GET - Listar todas las profesiones
+router.get('/', profesionController.getProfesiones);
 
-// Modificar una profesión por ID
-router.put('/:id', profesionesController.update);
+// GET - Obtener una profesión por id
+router.get('/:id', profesionController.getProfesion);
 
-// Buscar una profesión por ID
-router.get('/:id', profesionesController.getById);
+// POST - Crear una nueva profesión
+router.post('/create', profesionController.createProfesion);
+
+// PUT - Actualizar una profesión por id
+router.put('/edit/:id', profesionController.updateProfesion);
+
+// DELETE - Eliminar una profesión por id
+router.delete('/delete/:id', profesionController.deleteProfesion);
 
 module.exports = router;
+
 
