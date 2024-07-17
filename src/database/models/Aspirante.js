@@ -9,6 +9,11 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(100),
             allowNull: false
         },
+        Dni: {
+            type: dataTypes.INTEGER(15),
+            allowNull: false,
+            unique: true
+        },
         Email:{
             type: dataTypes.STRING(100),
             allowNull: false
@@ -40,18 +45,18 @@ module.exports = (sequelize, dataTypes) => {
     };
     let config = {
         timestamps: false,
-        tableName: 'Aspirante',
+        tableName: 'Aspirantes',
         deletedAt: false
     }
     
     const Aspirante = sequelize.define(alias, cols, config);  
 
-    Aspirante.associate = function(models){
-        Aspirante.belongsTo(models.Profesiones, {
-            as: "Profesiones",
-            foreignKey: "Profesion"
-        });
-    }
+    // Aspirante.associate = function(models){
+    //     Aspirante.belongsTo(models.Profesiones, {
+    //         as: "Profesiones",
+    //         foreignKey: "Profesion"
+    //     });
+    // }
 
     return Aspirante;
 };

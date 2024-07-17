@@ -27,8 +27,8 @@ app.use(express.urlencoded({ extended: false }))
 
 // ************ Rutas  ************
 // app.use('/', rutasMain)
-// app.use('/api/aspirantes', rutasAspirantes)
- app.use('/api/profesiones', rutasProfesiones)
+app.use('/api/aspirantes', rutasAspirantes)
+// app.use('/api/profesiones', rutasProfesiones)
 
 // Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
 // let SEQ = require('./database/models')
