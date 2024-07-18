@@ -36,7 +36,7 @@ const controller = {
 		try {
 			let aspirantes = await Aspirante.findAll({
 				where: {
-					descripcion: { [Op.like]: `%${req.body.keywords}%` },
+					descripcion: { [Op.like]: `%${req.params.keywords}%` },
 				},
 			});
 			if (aspirantes.length > 0) {

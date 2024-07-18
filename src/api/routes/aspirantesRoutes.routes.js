@@ -21,6 +21,6 @@ router.put('/edit/:id', aspiranteController.updateAspirante);
 router.delete('/delete/:id', aspiranteController.deleteAspirante);
 
 // GET - Obtener aspirantes segun descripcion
-router.get('/search', aspiranteController.searchAspirantes);
+router.get('/search/:keywords', aspiranteController.searchAspirantes);
 
 module.exports = router;
