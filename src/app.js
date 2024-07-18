@@ -2,13 +2,13 @@ const express = require("express");
 const path = require("path");
 const methodOverride = require('method-override');
 const cors = require('cors');
-const { sequelize } = require('./src/database/models');
+const { sequelize } = require('./database/models');
 
 
 // Requiriendo  archivos de rutas
 // const rutasMain = require('./api/routes/mainRoutes.routes.js')
-const rutasAspirantes = require('./src/api/routes/aspirantesRoutes.routes');
-const rutasProfesiones = require('./src/api/routes/profesionesRoutes.routes');
+const rutasAspirantes = require('./api/routes/aspirantesRoutes.routes');
+const rutasProfesiones = require('./api/routes/profesionesRoutes.routes');
 
 const app = express();
 
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: false }))
 // ************ Rutas  ************
 // app.use('/', rutasMain)
 app.use('/api/aspirantes', rutasAspirantes)
-// app.use('/api/profesiones', rutasProfesiones)
+app.use('/api/profesiones', rutasProfesiones)
 
 // Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
 // let SEQ = require('./database/models')
@@ -40,8 +40,6 @@ app.listen(port, async() => {
 	try {
         await sequelize.authenticate();
         console.log('Conexión a la base de datos establecida correctamente.');
-        // Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS
-        // await sequelize.sync({ force: true });
     } catch (error) {
         console.error('No se pudo conectar a la base de datos:', error);
     }
