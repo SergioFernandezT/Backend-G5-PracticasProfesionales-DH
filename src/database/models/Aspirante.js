@@ -1,66 +1,73 @@
-module.exports = (sequelize, dataTypes) => {
-    let alias = 'Aspirante';
-    let cols = {
+const bcrypt = require('bcrypt');
+
+module.exports = (sequelize, DataTypes) => {
+    const Aspirante = sequelize.define('Aspirante', {
         Nombre: {
-            type: dataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         Apellido: {
-            type: dataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         descripcion: {
-            type: dataTypes.TEXT,
+            type: DataTypes.TEXT,
             allowNull: false
         },
         Dni: {
-            type: dataTypes.INTEGER(15),
+            type: DataTypes.INTEGER,
             allowNull: false,
             unique: true
         },
         Email: {
-            type: dataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         Telefono: {
-            type: dataTypes.INTEGER(15),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         Perfil_linkedin: {
-            type: dataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         Fecha_nacimiento: {
-            type: dataTypes.DATE,
+            type: DataTypes.DATE,
             allowNull: false
         },
         Sexo: {
-            type: dataTypes.ENUM('masculino', 'femenino'),
+            type: DataTypes.ENUM('masculino', 'femenino'),
             allowNull: false
         },
         Imagen: {
-            type: dataTypes.STRING(100),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
-        // profesion_id:{
-        //     type: dataTypes.STRING(200),
-        //     allowNull: false
-        // }
-    };
-    let config = {
-        timestamps: false,
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    }, {
         tableName: 'aspirantes',
-        deletedAt: false
-    }
-
-    const Aspirante = sequelize.define(alias, cols, config);
+        timestamps: false,
+        hooks: {
+            beforeCreate: async aspirante => {
+                aspirante.password = await bcrypt.hash(aspirante.password, 10);
+            },
+            beforeUpdate: async aspirante => {
+                if (aspirante.password) {
+                    aspirante.password = await bcrypt.hash(aspirante.password, 10);
+                }
+            }
+        }
+    });
 
     Aspirante.associate = models => {
         Aspirante.belongsTo(models.Profesion, {
-            as: "profesiones_de_aspirante",
-            foreignKey: "profesion_id"
+            as: 'profesiones_de_aspirante',
+            foreignKey: 'profesion_id'
         });
-    }
+    };
 
     return Aspirante;
 };
