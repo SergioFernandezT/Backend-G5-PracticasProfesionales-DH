@@ -9,6 +9,10 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(100),
             allowNull: false
         },
+        descripcion: {
+            type: dataTypes.TEXT,
+            allowNull: false
+        },
         Dni: {
             type: dataTypes.INTEGER(15),
             allowNull: false,
@@ -31,7 +35,7 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false
         },
         Sexo: {
-            type: dataTypes.ENUM('maculino', 'femenino'),
+            type: dataTypes.ENUM('masculino', 'femenino'),
             allowNull: false
         },
         Imagen: {
