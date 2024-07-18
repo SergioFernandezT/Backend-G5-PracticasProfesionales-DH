@@ -23,7 +23,7 @@ const controller = {
                 where: {
                     id: req.params.id
                 },
-                individualHooks: true  // This ensures that the hooks defined in the model are executed
+                individualHooks: true  // Se asegura que los Hooks definidos en el modelo funcionen
             });
             if (updated) {
                 const updatedAspirante = await Aspirante.findByPk(req.params.id);
