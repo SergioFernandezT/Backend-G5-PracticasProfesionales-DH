@@ -15,13 +15,23 @@ const controller = {
             res.json(aspirante);
 
     },
-    updateAspirante: async(req, res) => {
-        const aspirante = await  Aspirante.update(req.body,
-            {
-            where: {
-                id: req.params.id
+    updateAspirante: async (req, res) => {
+        try {
+            const [updated] = await Aspirante.update(req.body, {
+                where: {
+                    id: req.params.id
+                },
+                individualHooks: true  // This ensures that the hooks defined in the model are executed
+            });
+            if (updated) {
+                const updatedAspirante = await Aspirante.findByPk(req.params.id);
+                res.status(200).json(updatedAspirante);
+            } else {
+                res.status(404).json({ message: 'Aspirante no encontrado' });
             }
-        })
+        } catch (error) {
+            res.status(500).json({ message: 'Error al actualizar el aspirante', error });
+        }
     },
     deleteAspirante: async(req, res) => {
         Aspirante.destroy({

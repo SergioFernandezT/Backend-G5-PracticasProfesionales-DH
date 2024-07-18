@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, dataTypes) => {
     let alias = 'Aspirante';
     let cols = {
@@ -45,9 +47,23 @@ module.exports = (sequelize, dataTypes) => {
     };
     let config = {
         timestamps: false,
-        tableName: 'Aspirantes',
-        deletedAt: false
-    }
+        tableName: 'aspirantes',
+        deletedAt: false,
+        hooks: {
+            beforeCreate: async (aspirante) => {
+                if (aspirante.Password) {
+                    const salt = await bcrypt.genSalt(10);
+                    aspirante.Password = await bcrypt.hash(aspirante.Password, salt);
+                }
+            },
+            beforeUpdate: async (aspirante) => {
+                if (aspirante.Password) {
+                    const salt = await bcrypt.genSalt(10);
+                    aspirante.Password = await bcrypt.hash(aspirante.Password, salt);
+                }
+            }
+        }
+    };
     
     const Aspirante = sequelize.define(alias, cols, config);  
 
