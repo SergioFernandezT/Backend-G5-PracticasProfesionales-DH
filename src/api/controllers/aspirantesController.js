@@ -1,4 +1,6 @@
 const { Aspirante } = require('../../database/models/');
+const db = require("../../database/models/index");
+const Op = db.Sequelize.Op;
 
 const controller = {
     getAspirantes: async(req, res) =>{
@@ -39,7 +41,22 @@ const controller = {
                 id: req.params.id
             }
         })
-    }
+    },
+    searchAspirantes: async (req, res) => {
+		try {
+			let aspirantes = await Aspirante.findAll({
+				where: {
+					descripcion: { [Op.like]: `%${req.params.keywords}%` },
+				},
+			});
+			if (aspirantes.length > 0) {
+				return res.json(aspirantes)
+			}
+		} catch (error) {
+			console.log(error);
+		}
+		return res.json('')
+	}
 }
 
 module.exports = controller;

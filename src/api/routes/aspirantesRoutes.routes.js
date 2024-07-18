@@ -9,7 +9,7 @@ const aspiranteController = require('../controllers/aspirantesController');
 router.get('/', aspiranteController.getAspirantes);
 
 // GET - Obtener un aspirante por id
-router.get('/:id', aspiranteController.getAspirante);
+router.get('/detail/:id', aspiranteController.getAspirante);
 
 // POST - Crear un nuevo aspirante
 router.post('/create', aspiranteController.createAspirante);
@@ -19,5 +19,8 @@ router.put('/edit/:id', aspiranteController.updateAspirante);
 
 // DELETE - Eliminar un aspirante por id
 router.delete('/delete/:id', aspiranteController.deleteAspirante);
+
+// GET - Obtener aspirantes segun descripcion
+router.get('/search/:keywords', aspiranteController.searchAspirantes);
 
 module.exports = router;
