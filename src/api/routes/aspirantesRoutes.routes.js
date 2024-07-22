@@ -23,4 +23,9 @@ router.delete('/delete/:id', aspiranteController.deleteAspirante);
 // GET - Obtener aspirantes segun descripcion
 router.get('/search/:keywords', aspiranteController.searchAspirantes);
 
+// Rutas para registro e inicio de sesión
+router.post('/register', controller.register);
+router.post('/login', controller.login);
+
+
 module.exports = router;
