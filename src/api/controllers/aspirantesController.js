@@ -1,7 +1,7 @@
 const { Aspirante } = require('../../database/models/');
 const db = require('../../database/models/index');
 const Op = db.Sequelize.Op;
-const { hashPassword, comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
+const { comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
 
 const controller = {
     getAspirantes: async (req, res) => {
@@ -110,7 +110,6 @@ const controller = {
     },
     login: async (req, res) => {
         const { email, password } = req.body;
-
         try {
             const user = await Aspirante.findOne({ where: { email } });
             if (!user) {
