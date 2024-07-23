@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         //     type: DataTypes.TEXT,
         //     allowNull: false
         // },
-        // Dni: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: false,
-        //     unique: true
-        // },
+        Dni: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true
+        },
         Email: {
             type: DataTypes.STRING(100),
             allowNull: false
