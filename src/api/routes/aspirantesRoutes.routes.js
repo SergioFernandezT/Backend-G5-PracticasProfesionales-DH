@@ -7,7 +7,7 @@ const aspiranteController = require('../controllers/aspirantesController');
 // Rutas para los aspirantes
 
 // GET - Listar todos los aspirantes (protegido con token)
-router.get('/', authenticateToken, aspiranteController.getAspirantes);
+router.get('/', aspiranteController.getAspirantes);
 
 // GET - Obtener un aspirante por id (protegido con token)
 router.get('/detail/:id', authenticateToken, aspiranteController.getAspirante);
@@ -22,7 +22,7 @@ router.put('/edit/:id', authenticateToken, aspiranteController.updateAspirante);
 router.delete('/delete/:id', authenticateToken, aspiranteController.deleteAspirante);
 
 // GET - Obtener aspirantes según descripción (protegido con token)
-router.get('/search/:keywords', authenticateToken, aspiranteController.searchAspirantes);
+router.get('/search/:keywords', aspiranteController.searchAspirantes);
 
 // Rutas para registro e inicio de sesión
 router.post('/register', aspiranteController.register); // No necesita token

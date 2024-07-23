@@ -83,21 +83,24 @@ const controller = {
         return res.status(404).json({ message: 'No se encontraron aspirantes' });
     },
     register: async (req, res) => {
-        const { email, password, nombre } = req.body;
-
+        const { email, password, firstName } = req.body;
+        console.log(email, password,firstName);
         try {
             const existingUser = await Aspirante.findOne({ where: { email } });
             if (existingUser) {
                 return res.status(400).json({ message: 'El usuario ya existe' });
             }
 
-            const hashedPassword = await hashPassword(password);
+            // const hashedPassword = await hashPassword(password);
 
             const newUser = await Aspirante.create({
-                email,
-                password: hashedPassword,
-                nombre
+                
+                Email:email,
+                password,
+                Nombre: firstName,
+                profesion_id: 1
             });
+            console.log(newUser);
 
             // Al registrar, no generamos un token, solo confirmamos el registro
             res.status(201).json({ message: 'Usuario registrado exitosamente' });

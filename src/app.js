@@ -2,8 +2,6 @@ const express = require("express");
 const path = require("path");
 const methodOverride = require('method-override');
 const cors = require('cors');
-const { sequelize } = require('./database/models');
-
 
 // Requiriendo  archivos de rutas
 // const rutasMain = require('./api/routes/mainRoutes.routes.js')
@@ -14,10 +12,8 @@ const app = express();
 
 // ************ Middlewares  ************
 app.use(methodOverride('_method'));
-// app.use(userLoggedMiddleware);
 
 // CORS MIDDLEWARE
-//const cors = require('cors'); aca lo pusimos dos veces
 app.use(cors());
 
 const publicPath = path.join(__dirname, "../public");
@@ -30,20 +26,8 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/api/aspirantes', rutasAspirantes)
 app.use('/api/profesiones', rutasProfesiones)
 
-
-// Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
-// let SEQ = require('./database/models')
-
 const port = process.env.PORT || 3737;
-app.listen(port, async() => {
-	// Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 2
-	// SEQ.sequelize.sync({force: true })    
-	try {
-        await sequelize.authenticate();
-        console.log('Conexión a la base de datos establecida correctamente.');
-    } catch (error) {
-        console.error('No se pudo conectar a la base de datos:', error);
-    }
+app.listen(port, async() => {   
 	console.log(`El servidor esta corriendo en http://localhost:${port} 🚀🚀🚀`);
 });
 
