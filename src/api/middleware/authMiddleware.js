@@ -9,12 +9,12 @@ const authenticateToken = (req, res, next) => {
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'Access denied, no token provided' });
+    return res.status(401).json({ message: 'Acceso denegado, no se ha proporcionado token' });
   }
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({ message: 'Token invalido' });
+      return res.status(403).json({ message: 'Token inválido' });
     }
     req.user = user;
     next();

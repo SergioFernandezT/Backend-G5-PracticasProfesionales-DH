@@ -9,7 +9,6 @@ const { sequelize } = require('./database/models');
 // const rutasMain = require('./api/routes/mainRoutes.routes.js')
 const rutasAspirantes = require('./api/routes/aspirantesRoutes.routes');
 const rutasProfesiones = require('./api/routes/profesionesRoutes.routes');
-const authRoutes = require('./api/routes/authRoutes');
 
 const app = express();
 
@@ -30,7 +29,7 @@ app.use(express.urlencoded({ extended: false }))
 // app.use('/', rutasMain)
 app.use('/api/aspirantes', rutasAspirantes)
 app.use('/api/profesiones', rutasProfesiones)
-app.use('/api/auth', authRoutes);
+
 
 // Entrada PARA FORZAR LA CREACION DE LA BASE DE DATOS 1
 // let SEQ = require('./database/models')

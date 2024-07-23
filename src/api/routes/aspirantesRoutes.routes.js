@@ -1,31 +1,31 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 
+const { authenticateToken } = require('../middleware/authMiddleware'); // Importación corregida
 const aspiranteController = require('../controllers/aspirantesController');
 
 // Rutas para los aspirantes
 
-// GET - Listar todos los aspirantes
-router.get('/', aspiranteController.getAspirantes);
+// GET - Listar todos los aspirantes (protegido con token)
+router.get('/', authenticateToken, aspiranteController.getAspirantes);
 
-// GET - Obtener un aspirante por id
-router.get('/detail/:id', aspiranteController.getAspirante);
+// GET - Obtener un aspirante por id (protegido con token)
+router.get('/detail/:id', authenticateToken, aspiranteController.getAspirante);
 
-// POST - Crear un nuevo aspirante
+// POST - Crear un nuevo aspirante (público, no necesita token)
 router.post('/create', aspiranteController.createAspirante);
 
-// PUT - Actualizar un aspirante por id
-router.put('/edit/:id', aspiranteController.updateAspirante);
+// PUT - Actualizar un aspirante por id (protegido con token)
+router.put('/edit/:id', authenticateToken, aspiranteController.updateAspirante);
 
-// DELETE - Eliminar un aspirante por id
-router.delete('/delete/:id', aspiranteController.deleteAspirante);
+// DELETE - Eliminar un aspirante por id (protegido con token)
+router.delete('/delete/:id', authenticateToken, aspiranteController.deleteAspirante);
 
-// GET - Obtener aspirantes segun descripcion
-router.get('/search/:keywords', aspiranteController.searchAspirantes);
+// GET - Obtener aspirantes según descripción (protegido con token)
+router.get('/search/:keywords', authenticateToken, aspiranteController.searchAspirantes);
 
 // Rutas para registro e inicio de sesión
-router.post('/register', controller.register);
-router.post('/login', controller.login);
-
+router.post('/register', aspiranteController.register); // No necesita token
+router.post('/login', aspiranteController.login); // No necesita token
 
 module.exports = router;
