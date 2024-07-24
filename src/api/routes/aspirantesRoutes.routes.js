@@ -10,7 +10,7 @@ const aspiranteController = require('../controllers/aspirantesController');
 router.get('/', aspiranteController.getAspirantes);
 
 // GET - Obtener un aspirante por id (protegido con token)
-router.get('/detail/:id', authenticateToken, aspiranteController.getAspirante);
+router.get('/detail/:id', aspiranteController.getAspirante);
 
 // POST - Crear un nuevo aspirante (público, no necesita token)
 router.post('/create', aspiranteController.createAspirante);

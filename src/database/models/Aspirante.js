@@ -2,47 +2,47 @@ const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
     const Aspirante = sequelize.define('Aspirante', {
-        Nombre: {
+        nombre: {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        // Apellido: {
-        //     type: DataTypes.STRING(100),
-        //     allowNull: false
-        // },
-        // descripcion: {
-        //     type: DataTypes.TEXT,
-        //     allowNull: false
-        // },
-        Dni: {
+        apellido: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
+        descripcion: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        dni: {
             type: DataTypes.INTEGER,
             allowNull: false,
             unique: true
         },
-        Email: {
+        email: {
             type: DataTypes.STRING(100),
             allowNull: false
         },
-        // Telefono: {
-        //     type: DataTypes.INTEGER,
-        //     allowNull: false
-        // },
-        // Perfil_linkedin: {
-        //     type: DataTypes.STRING(100),
-        //     allowNull: false
-        // },
-        // Fecha_nacimiento: {
-        //     type: DataTypes.DATE,
-        //     allowNull: false
-        // },
-        // Sexo: {
-        //     type: DataTypes.ENUM('masculino', 'femenino'),
-        //     allowNull: false
-        // },
-        // Imagen: {
-        //     type: DataTypes.STRING(100),
-        //     allowNull: false
-        // },
+        telefono: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        perfil_linkedin: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
+        fecha_nacimiento: {
+            type: DataTypes.DATE,
+            allowNull: false
+        },
+        sexo: {
+            type: DataTypes.ENUM('masculino', 'femenino'),
+            allowNull: false
+        },
+        imagen: {
+            type: DataTypes.STRING(100),
+            allowNull: false
+        },
         password: {
             type: DataTypes.STRING,
             allowNull: false
