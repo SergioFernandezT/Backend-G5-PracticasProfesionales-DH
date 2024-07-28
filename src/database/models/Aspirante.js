@@ -23,8 +23,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             allowNull: false
         },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         telefono: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING(30),
             allowNull: false
         },
         perfil_linkedin: {
@@ -36,14 +40,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         sexo: {
-            type: DataTypes.ENUM('masculino', 'femenino'),
+            type: DataTypes.ENUM('masculino', 'femenino','otro'),
             allowNull: false
         },
         imagen: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.TEXT,
             allowNull: false
         },
-        password: {
+        rol: {
             type: DataTypes.STRING,
             allowNull: false
         }

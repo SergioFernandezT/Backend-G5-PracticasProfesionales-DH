@@ -35,7 +35,7 @@ const controller = {
     },
     updateAspirante: async (req, res) => {
         try {
-            const [updated] = await Aspirante.update(req.body, {
+            const updated = await Aspirante.update(req.body, {
                 where: {
                     id: req.params.id
                 },
@@ -83,32 +83,35 @@ const controller = {
         return res.status(404).json({ message: 'No se encontraron aspirantes' });
     },
     register: async (req, res) => {
-        const { email, password, firstName,dni, telefono, perfil_linkedin, fecha_nacimiento, sexo, imagen, descripcion, profesion_id, lastName } = req.body;
-        
+        const { nombre, apellido, email, password, dni, telefono, linkedin, fecha_nacimiento, gender, imagen, descripcion, profesion_id, role } = req.body;
+
         try {
             const existingUser = await Aspirante.findOne({ where: { email } });
             if (existingUser) {
                 return res.status(400).json({ message: 'El usuario ya existe' });
             }
 
+            console.log(req.body);
             const newUser = await Aspirante.create({
+                nombre: nombre,
+                apellido: apellido,
+                dni: dni,
+                sexo:gender,
+                fecha_nacimiento: fecha_nacimiento,
                 email: email,
                 password: password,
-                nombre: firstName,
-                apellido: lastName,
-                dni: dni,
-                telefono,
-                perfil_linkedin,
-                fecha_nacimiento,
-                sexo,
-                imagen,
-                descripcion,
-                profesion_id
+                telefono: telefono,
+                perfil_linkedin: linkedin,
+                imagen: imagen,
+                descripcion: descripcion,
+                profesion_id: profesion_id,
+                rol:role
             });
-           
+            
             // Al registrar, no generamos un token, solo confirmamos el registro
             res.status(201).json({ message: 'Usuario registrado exitosamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error del servidor', error });
         }
     },
