@@ -91,7 +91,6 @@ const controller = {
                 return res.status(400).json({ message: 'El usuario ya existe' });
             }
 
-            console.log(req.body);
             const newUser = await Aspirante.create({
                 nombre: nombre,
                 apellido: apellido,
