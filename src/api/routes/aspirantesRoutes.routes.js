@@ -10,13 +10,13 @@ const aspiranteController = require('../controllers/aspirantesController');
 router.get('/', aspiranteController.getAspirantes);
 
 // GET - Obtener un aspirante por id (protegido con token)
-router.get('/detail/:id', authenticateToken, aspiranteController.getAspirante);
+router.get('/detail/:id', aspiranteController.getAspirante);
 
 // POST - Crear un nuevo aspirante (público, no necesita token)
 router.post('/create', aspiranteController.createAspirante);
 
 // PUT - Actualizar un aspirante por id (protegido con token)
-router.put('/edit/:id', authenticateToken, aspiranteController.updateAspirante);
+router.put('/edit/:id', aspiranteController.updateAspirante);
 
 // DELETE - Eliminar un aspirante por id (protegido con token)
 router.delete('/delete/:id', authenticateToken, aspiranteController.deleteAspirante);

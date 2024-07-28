@@ -1,16 +1,30 @@
-const { Aspirante } = require('../../database/models/');
+const { Aspirante , Profesion } = require('../../database/models/');
 const db = require('../../database/models/index');
 const Op = db.Sequelize.Op;
 const { comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
 
 const controller = {
-    getAspirantes: async (req, res) => {
-        try {
-            const aspirantes = await Aspirante.findAll();
-            res.json(aspirantes);
-        } catch (error) {
-            res.status(500).json({ message: 'Error al obtener aspirantes', error });
-        }
+   // getAspirantes: async (req, res) => {
+     //   try {
+       //     const aspirantes = await Aspirante.findAll();
+         //   res.json(aspirantes);
+       // } catch (error) {
+         //   res.status(500).json({ message: 'Error al obtener aspirantes', error });
+        //}
+        getAspirantes: async (req, res) => {
+            try {
+                const aspirantes = await Aspirante.findAll({
+                    include: [{
+                        model: Profesion,
+                        attributes: ['profesion'] 
+                    }]
+                });
+                res.json(aspirantes);
+                console.log(aspirantes)
+            } catch (error) {
+                res.status(500).json({ message: 'Error al obtener aspirantes', error });
+            }
+        
     },
     getAspirante: async (req, res) => {
         try {
