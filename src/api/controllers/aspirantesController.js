@@ -95,7 +95,7 @@ const controller = {
                 nombre: nombre,
                 apellido: apellido,
                 dni: dni,
-                sexo:gender,
+                sexo: gender,
                 fecha_nacimiento: fecha_nacimiento,
                 email: email,
                 password: password,
@@ -104,9 +104,9 @@ const controller = {
                 imagen: imagen,
                 descripcion: descripcion,
                 profesion_id: profesion_id,
-                rol:role
+                rol: role
             });
-            
+
             // Al registrar, no generamos un token, solo confirmamos el registro
             res.status(201).json({ message: 'Usuario registrado exitosamente' });
         } catch (error) {
@@ -130,7 +130,7 @@ const controller = {
             const token = generateAccessToken({ id: user.id, email: user.email });
 
             // Enviar token y confirmar inicio de sesión exitoso
-            res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+            res.status(200).json({ message: 'Inicio de sesión exitoso', 'token': token, 'id': user.id });
         } catch (error) {
             res.status(500).json({ message: 'Error del servidor', error });
         }
