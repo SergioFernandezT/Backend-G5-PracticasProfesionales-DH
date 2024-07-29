@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         imagen: {
-            type: DataTypes.TEXT,
+            type: DataTypes.TEXT('medium'),
             allowNull: false
         },
         rol: {
