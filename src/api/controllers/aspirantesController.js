@@ -1,4 +1,4 @@
-const { Aspirante } = require('../../database/models/');
+const { Aspirante, Profesion } = require('../../database/models/');
 const db = require('../../database/models/index');
 const Op = db.Sequelize.Op;
 const { comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
@@ -6,7 +6,10 @@ const { comparePassword, generateAccessToken } = require('../middleware/authMidd
 const controller = {
     getAspirantes: async (req, res) => {
         try {
-            const aspirantes = await Aspirante.findAll();
+            const aspirantes = await Aspirante.findAll({
+                attributes: ['id', 'nombre', 'apellido', 'descripcion', 'email', 'imagen'],
+                include: {model:Profesion, as: 'profesiones_de_aspirante'},
+            },);
             res.json(aspirantes);
         } catch (error) {
             res.status(500).json({ message: 'Error al obtener aspirantes', error });
@@ -85,7 +88,7 @@ const controller = {
     searchAspirantesByName: async (req, res) => {
         try {
             const { name } = req.params;
-    
+
             // Buscar tanto en el nombre como en el apellido
             const aspirantes = await Aspirante.findAll({
                 where: {
@@ -95,7 +98,7 @@ const controller = {
                     ]
                 }
             });
-    
+
             if (aspirantes.length > 0) {
                 return res.json(aspirantes);
             } else {
