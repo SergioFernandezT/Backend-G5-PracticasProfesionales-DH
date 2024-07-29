@@ -8,7 +8,7 @@ const controller = {
         try {
             const aspirantes = await Aspirante.findAll({
                 attributes: ['id', 'nombre', 'apellido', 'descripcion', 'email', 'imagen'],
-                include: {model:Profesion, as: 'profesiones_de_aspirante'},
+                include: { model: Profesion, as: 'profesiones_de_aspirante' },
             },);
             res.json(aspirantes);
         } catch (error) {
@@ -18,7 +18,10 @@ const controller = {
     getAspirante: async (req, res) => {
         try {
             const id = req.params.id;
-            const aspirante = await Aspirante.findByPk(id);
+            const aspirante = await Aspirante.findByPk(id,{
+                attributes: {exclude: ['password','profesion_id']},
+                include: { model: Profesion, as: 'profesiones_de_aspirante' },
+            });
             if (aspirante) {
                 res.json(aspirante);
             } else {
@@ -115,9 +118,8 @@ const controller = {
         try {
             const existingUser = await Aspirante.findOne({ where: { email } });
             if (existingUser) {
-                return res.status(400).json({ message: 'El usuario ya existe' });
+                return res.status(400).json({ message: 'El correo ya esta en uso' });
             }
-
             const newUser = await Aspirante.create({
                 nombre: nombre,
                 apellido: apellido,
