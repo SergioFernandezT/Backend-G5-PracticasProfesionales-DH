@@ -24,6 +24,9 @@ router.delete('/delete/:id', authenticateToken, aspiranteController.deleteAspira
 // GET - Obtener aspirantes según descripción (protegido con token)
 router.get('/search/:keywords', aspiranteController.searchAspirantes);
 
+// GET - Obtener aspirantes según nombre
+router.get('/name/:name', aspiranteController.searchAspirantesByName);
+
 // Rutas para registro e inicio de sesión
 router.post('/register', aspiranteController.register); // No necesita token
 router.post('/login', aspiranteController.login); // No necesita token
