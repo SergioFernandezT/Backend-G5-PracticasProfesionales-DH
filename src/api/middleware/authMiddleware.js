@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const JWT_SECRET = process.env.JWT_SECRET || 'tu_clave_secreta';
 
 const authenticateToken = (req, res, next) => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.header('Authorization')?.split(' ')[0];
 
   if (!token) {
     return res.status(401).json({ message: 'Acceso denegado, no se ha proporcionado token' });
