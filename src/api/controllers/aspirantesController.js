@@ -1,35 +1,27 @@
-const { Aspirante , Profesion } = require('../../database/models/');
+const { Aspirante, Profesion, Sequelize } = require('../../database/models/');
 const db = require('../../database/models/index');
 const Op = db.Sequelize.Op;
 const { comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
 
 const controller = {
-   // getAspirantes: async (req, res) => {
-     //   try {
-       //     const aspirantes = await Aspirante.findAll();
-         //   res.json(aspirantes);
-       // } catch (error) {
-         //   res.status(500).json({ message: 'Error al obtener aspirantes', error });
-        //}
-        getAspirantes: async (req, res) => {
-            try {
-                const aspirantes = await Aspirante.findAll({
-                    include: [{
-                        model: Profesion,
-                        attributes: ['profesion'] 
-                    }]
-                });
-                res.json(aspirantes);
-                console.log(aspirantes)
-            } catch (error) {
-                res.status(500).json({ message: 'Error al obtener aspirantes', error });
-            }
-        
+    getAspirantes: async (req, res) => {
+        try {
+            const aspirantes = await Aspirante.findAll({
+                attributes: ['id', 'nombre', 'apellido', 'descripcion', 'email', 'imagen'],
+                include: { model: Profesion, as: 'profesiones_de_aspirante' },
+            },);
+            res.json(aspirantes);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener aspirantes', error });
+        }
     },
     getAspirante: async (req, res) => {
         try {
             const id = req.params.id;
-            const aspirante = await Aspirante.findByPk(id);
+            const aspirante = await Aspirante.findByPk(id,{
+                attributes: {exclude: ['password','profesion_id']},
+                include: { model: Profesion, as: 'profesiones_de_aspirante' },
+            });
             if (aspirante) {
                 res.json(aspirante);
             } else {
@@ -49,7 +41,7 @@ const controller = {
     },
     updateAspirante: async (req, res) => {
         try {
-            const [updated] = await Aspirante.update(req.body, {
+            const updated = await Aspirante.update(req.body, {
                 where: {
                     id: req.params.id
                 },
@@ -83,7 +75,7 @@ const controller = {
     },
     searchAspirantes: async (req, res) => {
         try {
-            let aspirantes = await Aspirante.findAll({
+            const aspirantes = await Aspirante.findAll({
                 where: {
                     descripcion: { [Op.like]: `%${req.params.keywords}%` }
                 }
@@ -96,26 +88,58 @@ const controller = {
         }
         return res.status(404).json({ message: 'No se encontraron aspirantes' });
     },
+    searchAspirantesByName: async (req, res) => {
+        try {
+            const { name } = req.params;
+
+            // Buscar tanto en el nombre como en el apellido
+            const aspirantes = await Aspirante.findAll({
+                where: {
+                    [Op.or]: [
+                        { nombre: { [Op.like]: `%${name}%` } },
+                        { apellido: { [Op.like]: `%${name}%` } }
+                    ]
+                }
+            });
+
+            if (aspirantes.length > 0) {
+                return res.json(aspirantes);
+            } else {
+                return res.status(404).json({ message: 'No se encontraron aspirantes' });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Error al buscar aspirantes', error });
+        }
+    },
     register: async (req, res) => {
-        const { email, password, firstName,dni } = req.body;
-        
+        const { nombre, apellido, email, password, dni, telefono, linkedin, fecha_nacimiento, gender, imagen, descripcion, profesion_id, role } = req.body;
+
         try {
             const existingUser = await Aspirante.findOne({ where: { email } });
             if (existingUser) {
-                return res.status(400).json({ message: 'El usuario ya existe' });
+                return res.status(400).json({ message: 'El correo ya esta en uso' });
             }
-
             const newUser = await Aspirante.create({
-                Email: email,
-                password:password,
-                Nombre: firstName,
-                Dni: dni,
-                profesion_id: 1
+                nombre: nombre,
+                apellido: apellido,
+                dni: dni,
+                sexo: gender,
+                fecha_nacimiento: fecha_nacimiento,
+                email: email,
+                password: password,
+                telefono: telefono,
+                perfil_linkedin: linkedin,
+                imagen: imagen,
+                descripcion: descripcion,
+                profesion_id: profesion_id,
+                rol: role
             });
-           
+
             // Al registrar, no generamos un token, solo confirmamos el registro
             res.status(201).json({ message: 'Usuario registrado exitosamente' });
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Error del servidor', error });
         }
     },
@@ -135,9 +159,32 @@ const controller = {
             const token = generateAccessToken({ id: user.id, email: user.email });
 
             // Enviar token y confirmar inicio de sesión exitoso
-            res.status(200).json({ message: 'Inicio de sesión exitoso', token });
+            res.status(200).json({ message: 'Inicio de sesión exitoso', 'token': token, 'id': user.id });
         } catch (error) {
             res.status(500).json({ message: 'Error del servidor', error });
+        }
+    },
+
+    // Obtener la cantidad de aspirantes por profesión
+    getAspirantesPorProfesion: async (req, res) => {
+        try {
+            const aspirantesPorProfesion = await Profesion.findAll({
+                attributes: [
+                    'profesion',
+                    [Sequelize.fn('COUNT', Sequelize.col('aspirantes_de_profesion.id')), 'cantidad']
+                ],
+                include: [{
+                    model: Aspirante,
+                    as: 'aspirantes_de_profesion',
+                    attributes: []
+                }],
+                group: ['Profesion.id']
+            });
+
+            res.json(aspirantesPorProfesion);
+        } catch (error) {
+            console.error(error); // Log para depuración
+            res.status(500).json({ error: error.message });
         }
     }
 };
