@@ -40,23 +40,28 @@ const controller = {
         }
     },
     updateAspirante: async (req, res) => {
+        console.log(req.body)
         try {
-            const updated = await Aspirante.update(req.body, {
-                where: {
-                    id: req.params.id
-                },
-                individualHooks: true // Se asegura de que los Hooks definidos en el modelo funcionen
+            const [updatedRowsCount] = await Aspirante.update(req.body, {
+              where: {
+                id: req.params.id,
+              },
+              individualHooks: true, // Se asegura de que los Hooks definidos en el modelo funcionen
             });
-            if (updated) {
-                const updatedAspirante = await Aspirante.findByPk(req.params.id);
-                res.status(200).json(updatedAspirante);
+        
+            if (updatedRowsCount) {
+              // Si se actualizó alguna fila, recupera el aspirante actualizado
+              const updatedAspirante = await Aspirante.findByPk(req.params.id);
+              res.status(200).json(updatedAspirante);
             } else {
-                res.status(404).json({ message: 'Aspirante no encontrado' });
+              // No se actualizó ninguna fila porque no se encontró el aspirante
+              res.status(404).json({ message: 'Aspirante no encontrado' });
             }
-        } catch (error) {
+          } catch (error) {
+            console.error('Error al actualizar el aspirante:', error);
             res.status(500).json({ message: 'Error al actualizar el aspirante', error });
-        }
-    },
+          }
+        },
     deleteAspirante: async (req, res) => {
         try {
             const deleted = await Aspirante.destroy({
