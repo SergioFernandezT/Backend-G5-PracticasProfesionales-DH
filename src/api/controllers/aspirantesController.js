@@ -1,4 +1,4 @@
-const { Aspirante, Profesion } = require('../../database/models/');
+const { Aspirante, Profesion, Sequelize } = require('../../database/models/');
 const db = require('../../database/models/index');
 const Op = db.Sequelize.Op;
 const { comparePassword, generateAccessToken } = require('../middleware/authMiddleware');
@@ -162,6 +162,29 @@ const controller = {
             res.status(200).json({ message: 'Inicio de sesión exitoso', 'token': token, 'id': user.id });
         } catch (error) {
             res.status(500).json({ message: 'Error del servidor', error });
+        }
+    },
+
+    // Obtener la cantidad de aspirantes por profesión
+    getAspirantesPorProfesion: async (req, res) => {
+        try {
+            const aspirantesPorProfesion = await Profesion.findAll({
+                attributes: [
+                    'profesion',
+                    [Sequelize.fn('COUNT', Sequelize.col('aspirantes_de_profesion.id')), 'cantidad']
+                ],
+                include: [{
+                    model: Aspirante,
+                    as: 'aspirantes_de_profesion',
+                    attributes: []
+                }],
+                group: ['Profesion.id']
+            });
+
+            res.json(aspirantesPorProfesion);
+        } catch (error) {
+            console.error(error); // Log para depuración
+            res.status(500).json({ error: error.message });
         }
     }
 };

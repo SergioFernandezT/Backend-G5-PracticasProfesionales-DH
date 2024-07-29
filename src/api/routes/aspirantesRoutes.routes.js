@@ -31,4 +31,7 @@ router.get('/name/:name', aspiranteController.searchAspirantesByName);
 router.post('/register', aspiranteController.register); // No necesita token
 router.post('/login', aspiranteController.login); // No necesita token
 
+// GET - Obtener la cantidad de aspirantes por profesión
+router.get('/aspirantes-por-profesion', aspiranteController.getAspirantesPorProfesion);
+
 module.exports = router;
