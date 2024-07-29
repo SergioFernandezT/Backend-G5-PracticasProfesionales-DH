@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Aspirante } = require('../../database/models');
+// const { Aspirante } = require('../../database/models');
 const bcrypt = require('bcryptjs');
 
 // Configura una clave secreta segura en variables de entorno
@@ -21,11 +21,6 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-const hashPassword = async (password) => {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(password, salt);
-};
-
 const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
@@ -36,7 +31,6 @@ const generateAccessToken = (user) => {
 
 module.exports = {
   authenticateToken,
-  hashPassword,
   comparePassword,
   generateAccessToken
 };

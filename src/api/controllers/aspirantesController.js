@@ -146,12 +146,13 @@ const controller = {
     login: async (req, res) => {
         const { email, password } = req.body;
         try {
-            const user = await Aspirante.findOne({ where: { email } });
+            const user = await Aspirante.findOne({attributes:['id','password'], where: { email } });
             if (!user) {
                 return res.status(404).json({ message: 'Usuario no encontrado' });
             }
 
             const isPasswordValid = await comparePassword(password, user.password);
+            // console.log(!isPasswordValid);
             if (!isPasswordValid) {
                 return res.status(400).json({ message: 'Credenciales inválidas' });
             }
