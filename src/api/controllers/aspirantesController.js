@@ -69,7 +69,7 @@ const controller = {
     },
     searchAspirantes: async (req, res) => {
         try {
-            let aspirantes = await Aspirante.findAll({
+            const aspirantes = await Aspirante.findAll({
                 where: {
                     descripcion: { [Op.like]: `%${req.params.keywords}%` }
                 }
@@ -81,6 +81,30 @@ const controller = {
             console.log(error);
         }
         return res.status(404).json({ message: 'No se encontraron aspirantes' });
+    },
+    searchAspirantesByName: async (req, res) => {
+        try {
+            const { name } = req.params;
+    
+            // Buscar tanto en el nombre como en el apellido
+            const aspirantes = await Aspirante.findAll({
+                where: {
+                    [Op.or]: [
+                        { nombre: { [Op.like]: `%${name}%` } },
+                        { apellido: { [Op.like]: `%${name}%` } }
+                    ]
+                }
+            });
+    
+            if (aspirantes.length > 0) {
+                return res.json(aspirantes);
+            } else {
+                return res.status(404).json({ message: 'No se encontraron aspirantes' });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Error al buscar aspirantes', error });
+        }
     },
     register: async (req, res) => {
         const { nombre, apellido, email, password, dni, telefono, linkedin, fecha_nacimiento, gender, imagen, descripcion, profesion_id, role } = req.body;
