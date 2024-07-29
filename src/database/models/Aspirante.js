@@ -58,11 +58,6 @@ module.exports = (sequelize, DataTypes) => {
             beforeCreate: async aspirante => {
                 aspirante.password = await bcrypt.hash(aspirante.password, 10);
             },
-            beforeUpdate: async aspirante => {
-                if (aspirante.password) {
-                    aspirante.password = await bcrypt.hash(aspirante.password, 10);
-                }
-            }
         }
     });
 
